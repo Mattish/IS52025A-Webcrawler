@@ -2,6 +2,7 @@ IS52025A-Webcrawler
 ===================
 
 Webcrawler for Goldsmith's IS52025A
+------------------------------------------
 
 Original Brief:
 "Write a complete Java program that takes a url and a domain name as command line arguments that crawls recursively through all urls starting at args[0]. 
