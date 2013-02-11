@@ -1,11 +1,38 @@
 import java.util.HashMap;
+import java.net.*;
 
 public class WebCrawler{
 	Table table;
 	HashMap<String, Integer> urlMap;
 	int amountOfUrls;
 	public WebCrawler(String startUrl, String domain){
+		urlMap = new HashMap<String,Integer>();
+		table = new Table();
+		URL address;
+		HttpURLConnection connection;
+		BufferedReader reader;
+		StringBuilder stringBuilder;
+		String line;
+		try{
+			address = new URL(startUrl);
+			connection = (HttpURLConnection)address.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setReadTimeout(10000);
+			connection.connect();
+			reader = new BufferedReader(InputStreamReader(connection.getInputStream()));
+			stringBuilder = new StringBuilder();
+			while ((line = reader.readLine()) != null){
+				stringBuilder.append(line + "\n");
+			}
+			System.out.println(stringBuilder.toString());
 
+		}
+		catch(Exception e){
+
+		}	
+		
+		
+		
 	}
 
 	public WebCrawler(){
