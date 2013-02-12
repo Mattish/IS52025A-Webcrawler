@@ -1,38 +1,87 @@
-import java.util.HashMap;
+import java.util.*;
+import java.io.*;
 import java.net.*;
 
 public class WebCrawler{
 	Table table;
 	HashMap<String, Integer> urlMap;
+	ArrayList<String> urlsToDo;
+	
+	
 	int amountOfUrls;
 	public WebCrawler(String startUrl, String domain){
+		urlsToDo = new ArrayList<String>(10);
 		urlMap = new HashMap<String,Integer>();
 		table = new Table();
-		URL address;
+		amountOfUrls = 0;
+		urlsToDo.add("http://www.gold.ac.uk");
+		urlsToDo.add("http://www.gold.ac.uk/news/");
+		// If Urls to parse
+		while (urlsToDo.size() > 0){
+			ListIterator li = urlsToDo.listIterator();
+			while (li.hasNext()){
+				String url = (String)li.next();
+				if (urlMap.get(url) != null){
+					System.out.println("Removing :" + url);
+					li.remove();
+				}
+				else{
+					System.out.println("Getting :" + url);
+					urlMap.put(url,amountOfUrls);
+					amountOfUrls++;
+					try{
+						URL address = new URL(url);
+						String pageBody = getWebPage(address);
+						li.remove();
+						//check body for links
+						//loop through links
+						//    check if link already in urlMap 
+						//    if in urlMap 
+						//       add relationships to table for both ways
+						//    if not in urlMap 
+						//       add to urlMap 
+						//       add relationships to table for both ways
+						//       add url to urlsToDO
+					}
+					catch(Exception e){}
+				}
+				
+			}
+		}
+	}
+	
+	public static ArrayList<String> getUrlsFromString(String input){
+		Pattern p = Pattern.compile("ref=\@(^\\)");
+		matches = p.matcher(input);
+		ArrayList<String> matches = new ArrayList<String>(1);
+		int matchCounter = 0;
+		while (matcher.find()) {
+			matches.add(matcher.group(matchCounter));
+		}
+	}
+	
+	public static String getWebpage(URL url){
 		HttpURLConnection connection;
 		BufferedReader reader;
 		StringBuilder stringBuilder;
 		String line;
 		try{
-			address = new URL(startUrl);
-			connection = (HttpURLConnection)address.openConnection();
+			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("GET");
-			connection.setReadTimeout(10000);
+			connection.setReadTimeout(2000);
 			connection.connect();
-			reader = new BufferedReader(InputStreamReader(connection.getInputStream()));
+			reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			stringBuilder = new StringBuilder();
 			while ((line = reader.readLine()) != null){
 				stringBuilder.append(line + "\n");
 			}
-			System.out.println(stringBuilder.toString());
+			return stringBuilder.toString();
 
 		}
 		catch(Exception e){
-
+			e.printStackTrace();
 		}	
-		
-		
-		
+		return "";
 	}
 
 	public WebCrawler(){
