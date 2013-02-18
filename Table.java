@@ -15,8 +15,12 @@ public class Table{
 		}
 		else{
 			map.put(k1, new HashMap<Integer,Integer>());
-			return 0;
+			return -1;
 		}
+	}
+
+	public HashMap<Integer,Integer> getHashMapFromIndex(int index){
+		return map.get(index);
 	}
 
 	public void put(int k1, int k2, int value){
